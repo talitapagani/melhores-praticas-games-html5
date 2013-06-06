@@ -1,44 +1,593 @@
-<!doctype html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>Melhores Práticas de JavaScript para Jogos em HTML5 by talitapagani</title>
+<!doctype html>  
+<html lang="en">
+	
+	<head>
+		<meta charset="utf-8">
+		
+		<title>Melhores Práticas de JS</title>
 
-    <link rel="stylesheet" href="stylesheets/styles.css">
-    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-    <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-  </head>
-  <body>
-    <div class="wrapper">
-      <header>
-        <h1>Melhores Práticas de JavaScript para Jogos em HTML5</h1>
-        <p></p>
+		<meta name="author" content="Talita Pagani">
 
-        <p class="view"><a href="https://github.com/talitapagani/melhores-praticas-games-html5">View the Project on GitHub <small>talitapagani/melhores-praticas-games-html5</small></a></p>
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+		
+		<link href='http://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+		
+		<link rel="stylesheet" href="css/reset.css">
+		<link rel="stylesheet" href="css/main.css">
+		<link rel="stylesheet" href="css/print.css" type="text/css" media="print">
 
+		<link rel="stylesheet" href="lib/zenburn.css">
+	</head>
+	
+	<body>
+		
+		<div class="reveal">
 
-        <ul>
-          <li><a href="https://github.com/talitapagani/melhores-praticas-games-html5/zipball/master">Download <strong>ZIP File</strong></a></li>
-          <li><a href="https://github.com/talitapagani/melhores-praticas-games-html5/tarball/master">Download <strong>TAR Ball</strong></a></li>
-          <li><a href="https://github.com/talitapagani/melhores-praticas-games-html5">View On <strong>GitHub</strong></a></li>
-        </ul>
-      </header>
-      <section>
-        <h1>
-<a name="melhores-prticas-de-javascript-para-jogos-em-html5" class="anchor" href="#melhores-prticas-de-javascript-para-jogos-em-html5"><span class="octicon octicon-link"></span></a>Melhores Práticas de JavaScript para Jogos em HTML5</h1>
+			<!-- Used to fade in a background when a specific slide state is reached -->
+			<div class="state-background"></div>
+			
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+				<section>
+					<h1>HTML5 Game Dev</h1>
+					<h3 class="inverted">Melhores práticas de JavaScript e desenvolvimento de jogos em HTML5</h3>
+					<p>
+						<i><small>- Talita Pagani / <a href="http://twitter.com/talitapagani">@talitapagani</a></small></i>
+					</p>
+				</section>
+				
+				<section data-state="soothe" class="sectionTitle">
+					<h1>JavaScript</h1>
+				</section>
+				
+				<section>
+					<section>
+						<h2>Criando objetos</h2>
+						<pre><code contenteditable>
+// Notação literal de objeto, o objeto já está instanciado
+var o = {  
+   name: 'Jeffrey',  
+   lastName: 'Way',  
+   someFunction: function() {  
+      console.log(this.name);  
+   }  
+};
 
-<p>Esta apresentação apresenta algumas diretrizes e recomendações para otimizar o uso de JavaScript no desenvolvimento de jogos baseados em HTML5. Muitas destas recomendações são aplicáveis a qualquer aplicação web ou site que utilize JavaScript, enquanto a segunda parte é focada especificamente para o uso de JavaScript e manipulação do Canvas.</p>
-      </section>
-      <footer>
-        <p>This project is maintained by <a href="https://github.com/talitapagani">talitapagani</a></p>
-        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
-      </footer>
-    </div>
-    <script src="javascripts/scale.fix.js"></script>
-    
-  </body>
+// Não é possível fazer isso, ou seja, notação literal não cria abstrações reutilizáveis
+var obj = new o();
+
+// A forma de "instanciação" poderia ser feita dessa forma
+var obj = Object.create(o);
+						</code></pre>
+					
+						<a href="#/2/1"><img src="assets/images/arrow.png" alt="Pressione a seta para baixo para visualizar o próximo slide" /></a>
+					</section>
+					<section>
+						<h2>Criando objetos</h2>
+						<pre><code contenteditable>
+// Prototype: permite criar o equivalente a uma classe, que pode ser instanciada pelo operador 'new'
+var o = function(name, lastName) {
+	this.name = name;
+	this.lastName = lastName;
+}
+
+o.prototype.someFunction = function() {
+	console.log(this.name);
+}
+
+var obj1 = new o('Jeffrey', 'Way'),
+obj2 = new o('Josh', 'Way');
+	
+obj1.someFunction(); // Output: Jeffrey
+obj2.someFunction(); // Output: Josh
+						</code></pre>
+					
+						<a href="#/2/2"><img src="assets/images/arrow.png" alt="Pressione a seta para baixo para visualizar o próximo slide" /></a>
+					</section>
+					<section>
+						<h2>Criando objetos</h2>
+						<ul>
+							<li>Prototype: recomendável por questões de performance</li>
+							<li>Benchmarks:</li>
+							<ul>
+								<li><a href="http://jsperf.com/proto-vs-object-j/2" target="_blank">Prototype vs. Pseudo-object vs. Closure vs. Literal</a></li>
+								<li><a href="http://jsperf.com/prototype-vs-mixin-vs-closure" target="_blank">Prototype vs. Closure</a></li>
+								<li><a href="http://jsperf.com/prototype-x-object-create" target="_blank">Prototype vs. Object.create()</a></li>
+							</ul>
+						</ul>
+					
+						<a href="#/2"><img src="assets/images/arrow.png" alt="Pressione a seta para cima para voltar ao primeiro slide desta sequência" style="-webkit-transform: rotate(180deg);" /></a>
+					</section>
+				</section>
+				
+				<section>
+					<section>
+						<h2>Getters e Setters</h2>
+						<h3>Para objetos literais</h3>
+						<pre><code contenteditable>
+var o = {
+  _a: 7,
+  get a() { return this.a; },
+  set a(x) { this.a = x; }
+};
+						</code></pre>
+						
+						<a href="#/3/1"><img src="assets/images/arrow.png" alt="Pressione a seta para baixo para visualizar o próximo slide" /></a>
+					</section>
+					<section>
+						<h2>Getters e Setters</h2>
+						<h3>Object.defineProperty</h3>
+						<pre><code contenteditable>
+var o = function() {
+	this._a = null;
+};
+
+Object.defineProperty(o, "a", {get : function(){ return this._a; },
+                               set : function(newValue){ this._a = newValue; },
+                               enumerable : true,
+                               configurable : true});
+						</code></pre>
+						
+						<a href="#/3/2"><img src="assets/images/arrow.png" alt="Pressione a seta para baixo para visualizar o próximo slide" /></a>
+					</section>
+					<section>
+						<h2>Getters e Setters</h2>
+						<h3>Object.defineProperties</h3>
+						<pre><code contenteditable>
+var o = function() {
+	this._a = null;
+	this._b = null;
+};
+
+Object.defineProperties(o, {
+	"a": {
+		get : function(){ return this._a; },
+		set : function(newValue){ this._a = newValue; },
+		writable: true,
+		enumerable : true,
+		configurable : true
+	},
+	"b": {
+		get : function(){ return this._b; },
+		set : function(newValue){ this._b = newValue; },
+		writable: true,
+		enumerable : true,
+		configurable : true
+	}
+});
+						</code></pre>
+						
+						<a href="#/3/3"><img src="assets/images/arrow.png" alt="Pressione a seta para baixo para visualizar o próximo slide" /></a>
+					</section>
+					<section>
+						<h2>Getters e Setters</h2>
+						<h3>Mixin</h3>
+						<pre><code contenteditable>
+var o = function() {
+	
+	this._prop = null;
+	
+	return {
+		get prop() { return this._prop; },
+  		set prop(x) { this._prop = x; }
+	};
+	
+};
+						</code></pre>
+						
+						<a href="#/3"><img src="assets/images/arrow.png" alt="Pressione a seta para cima para voltar ao primeiro slide desta sequência" style="-webkit-transform: rotate(180deg);" /></a>
+					</section>
+				</section>
+
+				<section>
+					<h2>Não utilize múltiplos var</h2>
+					<pre><code contenteditable>
+// Contraproducente
+var someItem = 'some string';  
+var anotherItem = 'another string';  
+var oneMoreItem = 'one more string';
+
+// Melhor
+var someItem = 'some string',  
+    anotherItem = 'another string',  
+    oneMoreItem = 'one more string';
+					</code></pre>
+				</section>
+				
+				<section>
+					<h2>Use {} ao invés de new Object()</h2>
+					<pre><code contenteditable>
+// Modo tradicional de criar um objeto qualquer
+var o = new Object();  
+o.name = 'Jeffrey';  
+o.lastName = 'Way';  
+o.someFunction = function() {  
+   console.log(this.name);  
+}
+
+// Notação literal de objeto (também chamado ‘singleton’)
+var o = {  
+   name: 'Jeffrey',  
+   lastName: 'Way',  
+   someFunction: function() {  
+      console.log(this.name);  
+   }  
+};
+					</code></pre>
+				</section>
+				
+				<section>
+					<h2>Use [] ao invés de new Array()</h2>
+					<pre><code contenteditable>
+// Forma usual
+var a = new Array();
+a[0] = "Joe";
+a[1] = 'Plumber';
+
+// Forma mais robusta
+var a = ['Joe','Plumber'];
+					</code></pre>
+				</section>
+				
+				<section>
+					<h2>Omita  { } em if apenas se a declaração for de uma linha</h2>
+					<pre><code contenteditable>
+// Pode causar ambiguidade para interpretar este código
+if(someVariableExists)  
+   x = false  
+anotherFunctionCall();
+
+// Sem ambiguidades
+if(someVariableExists) x = false;
+
+anotherFunctionCall();
+					</code></pre>
+				</section>
+				
+				<section>
+					<h2>Reduzindo quantidade de if’s</h2>
+					<pre><code contenteditable>
+var _x;
+
+// Baixa performance e código muito extenso
+if (params.x != undefined) {
+	_x = params.x;
+} else {
+	_x = 0;
+}
+
+// Solução mais rápida, mas ainda não a melhor neste caso
+_x = ((params.x != undefined) ? params.x : 0);
+
+// Solução mais rápida e mais elegante
+_x = params.x || 0;
+					</code></pre>
+				</section>
+				
+				<section>
+					<h2>Otimizando loops</h2>
+					<pre><code contenteditable>
+// Incorreto
+var names = ['George','Ringo','Paul','John'];
+for(var i = 0; i < names.length; i++){
+  doSomeThingWith(names[i]);
+}
+
+// Correto
+var names = ['George','Ringo','Paul','John'];
+var all = names.length;
+for(var i = 0; i < all; i++){
+  doSomeThingWith(names[i]);
+}
+
+// Mais elegante e clean
+var names = ['George','Ringo','Paul','John'];
+for(var i = 0, j = names.length; i < j; i++){
+  doSomeThingWith(names[i]);
+}
+					</code></pre>
+				</section>
+				
+				<section>
+					<h2>Use for-in para loop em objetos</h2>
+					<pre><code contenteditable>
+for(key in object) {  
+   if(object.hasOwnProperty(key) {  
+      ...faz alguma coisa...  
+   }  
+}
+					</code></pre>
+				</section>
+				
+				<section>
+					<h2>Use .join() quando necessário</h2>
+					<pre><code contenteditable>
+var arr = ['item 1', 'item 2', 'item 3', ...];  
+var list = '&lt;ul&gt;&lt;li&gt;' + arr.join('&lt;/li&gt;&lt;li&gt;') + '&lt;/li&gt;&lt;/ul&gt;';
+					</code></pre>
+				</section>
+				
+				<section>
+					<h2>Outras práticas</h2>
+					<ul class="small">
+						<li>Carregue os arquivos JavaScript ao final da página</li>
+						<li>Code standards:</li>
+						<ul>
+							<li>Definições de objetos / protótipos devem seguir o padrão de nomenclatura de classes (title case). Exemplo: MeuObjeto;</li>
+							<li>Métodos e propriedades devem ser escritos em camel case. Exemplo: meuMetodo, umaPropriedade;</li>
+							<li>Variáveis que têm o intento de serem privadas devem possuir um underscore antes do nome. Apenas torne uma propriedade privada se ela não deve ser acessada ou modificada diretamente;</li>
+							<li>Use tabs ao invés de espaço para identação. Configure a sua IDE, caso ela converta tabs para espaços.</li>
+						</ul>
+					</ul>
+				</section>
+				
+				<section data-state="soothe" class="sectionTitle">
+					<h1>Game Dev. em HTML5</h1>
+				</section>
+				
+				<section>
+					<h2>Use requestAnimationFrame ao invés de setTimeout/setInterval</h2>
+					<pre><code contenteditable>
+window.requestAnimFrame = (function(){
+  return  window.requestAnimationFrame       || 
+          window.webkitRequestAnimationFrame || 
+          window.mozRequestAnimationFrame    || 
+          window.oRequestAnimationFrame      || 
+          window.msRequestAnimationFrame     || 
+          function(/* function */ callback, /* DOMElement */ element){
+            window.setTimeout(callback, 1000 / 60);
+          };
+})();
+
+(function animloop(){
+  requestAnimFrame(animloop);
+  render();
+})();
+					</code></pre>
+				</section>
+				
+				<section>
+					<section>
+						<h2>Configure o viewport para visualização em telas menores</h2>
+						<pre><code contenteditable>
+&lt;meta name="viewport" content="width=device-width; user-scalable=no; initial-scale=1.0" /&gt;
+						</code></pre>
+						
+						<table class="dataTable">
+							<thead>
+								<tr>
+									<th>Valor</th>
+									<th>Exemplo</th>
+									<th>Descrição</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>width</td>
+									<td><code>width=320<br />width=device-width</code></td>
+									<td>Define uma largura para o viewport. Os valores podem ser em px ou “device-width”, que determina automaticamente um valor igual à largura da tela do dispositivo.</td>
+								</tr>
+								<tr>
+									<td>height</td>
+									<td><code>height=480<br />height=device-height</code></td>
+									<td>Define uma altura para o viewport. Os valores podem ser em px ou “device-height”, que determina automaticamente um valor igual à altura da tela do dispositivo.</td>
+								</tr>
+								<tr>
+									<td>initial-scale</td>
+									<td><code>initial-scale=1.0</code></td>
+									<td>Define a escala inicial do viewport.</td>
+								</tr>
+								<tr>
+									<td>user-scalable</td>
+									<td><code>user-scalable=no</code></td>
+									<td>Define a possibilidade de o usuário fazer “zoom” em um determinado lugar da tela. É ativado quando o usuário bate duas vezes com o dedo em um lugar da tela.</td>
+								</tr>
+								<tr>
+									<td>maximum-scale</td>
+									<td><code>maximum-scale=2.5</code></td>
+									<td>Define o limite máximo de zoom que o usuário pode fazer para a página. O valor pode variar entre 0.25 e 10.0.</td>
+								</tr>
+								<tr>
+									<td>minimum-scale</td>
+									<td><code>minimum-scale=0.5</code></td>
+									<td>Define o limite mínimo de zoom que o usuário pode fazer para a página. O valor pode variar entre 0.25 e 10.0.</td>
+								</tr>
+							</tbody>
+						</table>
+						<a href="#/15/1"><img src="assets/images/arrow.png" alt="Pressione a seta para baixo para visualizar o próximo slide" /></a>
+					</section>
+					<section>
+						<h2>Outras tags e metatags</h2>
+						<h3>apple-mobile-web-app-capable</h3>
+						<p class="small">Define se a aplicação será executada em modo <em>fullscreen</em> caso o <em>content</em> esteja como <em>yes</em>.</p>
+						<pre><code contenteditable>
+&lt;meta name="apple-mobile-web-app-capable" content="yes"&gt;
+						</code></pre>
+						<h3>mobile-web-app-status-bar-style</h3>
+						<p class="small">Se a aplicação estiver executando em modo <em>fullscreen</em>, esta metatag permite minimizar a barra de status do Safari. Ela não tem efeito se a <em>metatag apple-mobile-web-app-capable</em> não estiver definida como <em>yes</em>.</p>
+						<pre><code contenteditable>
+&lt;meta name="apple-mobile-web-app-status-bar-style" content="black"&gt;
+						</code></pre>
+						<a href="#/15/2"><img src="assets/images/arrow.png" alt="Pressione a seta para baixo para visualizar o próximo slide" /></a>
+					</section>
+					<section>
+						<h2>Outras tags e metatags</h2>
+						<h3>apple-touch-startup-image</h3>
+						<p class="small">Define uma imagem inicial enquanto a aplicação é iniciada.</p>
+						<pre><code contenteditable>
+&lt;link rel="apple-touch-startup-image" href="/startup.png"&gt;
+						</code></pre>
+						<a href="#/15"><img src="assets/images/arrow.png" alt="Pressione a seta para cima para voltar ao primeiro slide desta sequência" style="-webkit-transform: rotate(180deg);" /></a>
+					</section>
+				</section>
+				
+				<section>
+					<section>
+						<h2>SpriteMaps com .drawImage()</h2>
+						<ul>
+							<li>Recortar/desenhar imagens e partes de uma imagem no canvas;</li>
+							<li>Reduz o número de requisições HTTP -> Diminui o tempo de carregamento.</li>
+						</ul>
+						<a href="#/16/1"><img src="assets/images/arrow.png" alt="Pressione a seta para baixo para visualizar o próximo slide" /></a>
+					</section>
+					<section>
+						<h2>SpriteMaps com .drawImage()</h2>
+						<pre><code contenteditable>
+(a) context.drawImage(img,x,y);
+(b) context.drawImage(img,x,y,width,height);
+(c) context.drawImage(img,sx,sy,swidth,sheight,dx,dy,dwidth,dheight);
+						</code></pre>
+						
+						<table class="dataTable">
+							<thead>
+								<tr>
+									<th>Parâmetro</th>
+									<th>Descrição</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>img</td>
+									<td>A imagem a ser desenhada no canvas</td>
+								</tr>
+								<tr>
+									<td>sx*/ x</td>
+									<td>A coordenada "x" de onde começa a ser desenhada/recortada a imagem</td>
+								</tr>
+								<tr>
+									<td>sy* / y</td>
+									<td>A coordenada "y" de onde começa a ser desenhada/recortada a imagem</td>
+								</tr>
+								<tr>
+									<td>swidth / width</td>
+									<td>A largura da imagem desenhada</td>
+								</tr>
+								<tr>
+									<td>sheight / height</td>
+									<td>A altura da imagem desenhada</td>
+								</tr>
+								<tr>
+									<td>dx</td>
+									<td>A coordenada "x" do canvas onde será posicionada a imagem</td>
+								</tr>
+								<tr>
+									<td>dy</td>
+									<td>A coordenada "y" do canvas onde será posicionada a imagem</td>
+								</tr>
+								<tr>
+									<td>dwidth</td>
+									<td>A largura da área recortada, em pixels</td>
+								</tr>
+								<tr>
+									<td>dheight</td>
+									<td>A altura da área recortada, em pixels</td>
+								</tr>
+							</tbody>
+						</table>
+						<p class="small">* Quando o drawImage é utilizado com a assinatura (a) ou (b), os parâmetros x e y correspondem às coordenadas do canvas. Na assinatura (c), corresponde às coordenadas de dentro da imagem, indicando o ponto de origem de onde ela será recortada.</p>
+						<a href="#/16/2"><img src="assets/images/arrow.png" alt="Pressione a seta para baixo para visualizar o próximo slide" /></a>
+					</section>
+					<section>
+						<h2>Exemplo</h2>
+						<img src="assets/images/spritemap.png" alt="SpriteMap do Mario Kart mostrando as coordenadas de recorte de um sprite" height="350" /><br />
+						<a href="#/16/3"><img src="assets/images/arrow.png" alt="Pressione a seta para baixo para visualizar o próximo slide" /></a>
+					</section>
+					<section>
+						<h2>Exemplo</h2>
+						<pre><code contenteditable>
+var canvas = document.getElementById("game"),
+ctx = canvas.getContext("2d"),
+spritemap = new Image();
+	
+spritemap.src = "super-mario-kart-mario-sprites.png";
+	
+ctx.drawImage(spritemap, 70, 105, 35, 35, 10, 15, 35, 35);
+						</code></pre>
+						<a href="#/16"><img src="assets/images/arrow.png" alt="Pressione a seta para cima para voltar ao primeiro slide desta sequência" style="-webkit-transform: rotate(180deg);" /></a>
+					</section>
+				</section>
+				
+				<section>
+					<h2>Acessibilidade</h2>
+					<ul>
+						<li>Até o momento, o conteúdo do canvas ainda não é acessível, ou seja, textos e conteúdos não podem ser interpretados por um software leitor de telas;</li>
+						<li>Prover fallbacks em DOM e animações simples em CSS3:</li>
+						<ul>
+							<li>Botões, informações sobre o status do jogador, diálogo.</li>
+						</ul>
+					</ul>
+				</section>
+				
+				<section>
+					<h1>Fim</h1>
+				</section>
+			</div>
+
+			<!-- The navigational controls UI -->
+			<aside class="controls">
+				<a class="left" href="#">&#x25C4;</a>
+				<a class="right" href="#">&#x25BA;</a>
+				<a class="up" href="#">&#x25B2;</a>
+				<a class="down" href="#">&#x25BC;</a>
+			</aside>
+
+			<!-- Displays presentation progress, max value changes via JS to reflect # of slides -->
+			<div class="progress"><span></span></div>
+			
+		</div>
+
+		<!-- Optional libraries for code syntax highlighting and classList support in IE9 -->
+		<script src="lib/highlight.js"></script>
+		<script src="lib/classList.js"></script>
+		
+		<script src="js/reveal.js"></script>
+		
+		<script>
+			// Parse the query string into a key/value object
+			var query = {};
+			location.search.replace( /[A-Z0-9]+?=(\w*)/gi, function(a) {
+				query[ a.split( '=' ).shift() ] = a.split( '=' ).pop();
+			} );
+
+			// Fires when a slide with data-state=customevent is activated
+			Reveal.addEventListener( 'customevent', function() {
+				alert( '"customevent" has fired' );
+			} );
+
+			// Fires each time a new slide is activated
+			Reveal.addEventListener( 'slidechanged', function( event ) {
+				// event.previousSlide, event.currentSlide, event.indexh, event.indexv
+			} );
+
+			Reveal.initialize({
+				// Display controls in the bottom right corner
+				controls: true,
+
+				// Display a presentation progress bar
+				progress: true,
+
+				// If true; each slide will be pushed to the browser history
+				history: true,
+
+				// Loops the presentation, defaults to false
+				loop: false,
+
+				// Flags if mouse wheel navigation should be enabled
+				mouseWheel: true,
+
+				// Apply a 3D roll to links on hover
+				rollingLinks: true,
+
+				// UI style
+				theme: query.theme || 'default', // default/neon
+
+				// Transition style
+				transition: query.transition || 'cube' // default/cube/page/concave/linear(2d)
+			});
+
+			hljs.initHighlightingOnLoad();
+		</script>
+
+	</body>
 </html>
